@@ -8,9 +8,12 @@ use App\Models\Book;
 
 class TransactionController extends Controller
 {
-    public function show()
+    public function show($reference)
     {
-         return view('transaction.show');
+        $tripay = new TripayController();
+        $detail = $tripay->detailTransaction($reference);
+
+        return view('transaction.show', compact('tripay', 'detail'));
     }
 
     public function store(Request $request)
@@ -19,6 +22,10 @@ class TransactionController extends Controller
         $method = $request->method;
 
         $tripay = new TripayController();
-        $tripay->requestTransaction($method, $book);
+        $transaction = $tripay->requestTransaction($method, $book);
+
+        return redirect()->route('transaction.show', [
+            'reference' => $transaction->reference,
+        ]);
     }
 }
