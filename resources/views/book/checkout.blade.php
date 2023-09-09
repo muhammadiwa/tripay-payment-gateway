@@ -10,14 +10,17 @@
         <div class="grid grid-cols-4 gap-3">
             @foreach ($channels as $channel)
                 @if ($channel->active)
-                    <a href="{{ route('transaction.show', 'DEV-2131232') }}">
-                        <div class="bg-white p-5 h-32 w-36 rounded-md shadow-soft flex items-center">
+                    <form action="{{ route('transaction.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="book_id" id="" value="{{ $book->id }}">
+                        <input type="hidden" name="method" id="" value="{{ $channel->code }}">
+                        <button type="submit" class="bg-white p-5 h-32 w-36 rounded-md shadow-soft flex items-center">
                             <div>
                                 <img src="{{ asset('storage/bank/' . $channel->code . '.png') }}" class="w-full" alt="">
                                 <p class="mt-3 text-xs text-gray-600">{{ $channel->name }}</p>
                             </div>
-                        </div>
-                    </a>
+                        </button>
+                    </form>
                 @endif
             @endforeach
         </div>
